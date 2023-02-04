@@ -1,7 +1,7 @@
 
 const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
-const { toHex, hexToBytes, utf8ToBytes } = require("ethereum-cryptography/utils");
+const { toHex, hexToBytes } = require("ethereum-cryptography/utils");
 
 const publicKeyToAddress = (publicKey) => {
     const publicKeyHash = keccak256(publicKey.slice(1));
