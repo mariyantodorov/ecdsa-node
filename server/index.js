@@ -3,13 +3,16 @@ const app = express();
 const cors = require("cors");
 const port = 3042;
 
+const helper = require("./helper");
+
 app.use(cors());
 app.use(express.json());
 
+//address => balance
 const balances = {
-  "0x1": 100,
-  "0x2": 50,
-  "0x3": 75,
+  "39D593B807F7C9032BB68832C309F38F09DC73EB": 100,
+  "ED95ABD05D1E4556C126B6A8F0B212844F013829": 50,
+  "0081EFBFFEABB8425389C7D0E54E51D8621304C6": 75,
 };
 
 app.get("/balance/:address", (req, res) => {
@@ -19,7 +22,11 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { sender, recipient, amount } = req.body;
+  const { message, signature } = req.body;
+  const { recipient, amount } = message;
+
+  const publicKey = helper.retrievePublicKey(message, signature);
+  const sender = helper.publicKeyToAddress(publicKey);
 
   setInitialBalance(sender);
   setInitialBalance(recipient);
